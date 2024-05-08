@@ -16,13 +16,8 @@ export async function handlePriceCreation(
 	try {
 		const prices = await Promise.all(
 			body.map(async (product: Product) => {
-				const {
-					name,
-					description,
-					price: productPrice,
-					image,
-				} = product;
-				const unit_amount = productPrice * 100;
+				const { name, description, price, image } = product;
+				const unit_amount = Number((price * 100).toFixed(0));
 
 				const { id: newProductId } =
 					await stripe.products.create({
@@ -64,7 +59,7 @@ export async function handleCheckout(req: Request, res: Response) {
 			cancel_url: "http://localhost:3000/canceled",
 		});
 
-		if (!line_items)
+		if (!line_items || line_items.length === 0)
 			res.status(StatusCodes.BAD_REQUEST).send("Bad request");
 
 		if (!session)
@@ -72,7 +67,6 @@ export async function handleCheckout(req: Request, res: Response) {
 
 		res.status(StatusCodes.OK).json(session);
 	} catch (error) {
-		console.log(error);
 		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			status: StatusCodes.INTERNAL_SERVER_ERROR,
 			message: `Something went wrong: '${(error as any).message}'`,
