@@ -73,3 +73,51 @@ export async function handleCheckout(req: Request, res: Response) {
 		});
 	}
 }
+
+const style = {
+	body: "bg-gray-800 h-screen",
+	text: "text-white",
+	container: "flex flex-col justify-center items-center h-screen",
+	link: "text-teal-700 hover:text-teal-500",
+	heading: "text-3xl",
+};
+
+export async function showSuccessPage(_: Request, res: Response) {
+	const html = `
+	<!DOCTYPE html>
+	<html>
+	  <head>
+		<title>Stripe Ecommerce - Sucess</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	  </head>
+	  <body class="${style.body}">
+		<div class="${style.container} ${style.text}"><h1 class="${style.heading}">Success</h1>
+		<p>Thank you for trying this demo!</p>
+		<p>No real money was charged.</p>
+		<p>See more web apps like this in <a href="https://portfolio-kellysondias.vercel.app/" class="${style.link}">my portfolio</a>.</p></div>
+	  </body>
+	</html>
+  `;
+	res.status(StatusCodes.OK).send(html);
+}
+
+export async function showCanceledPage(_: Request, res: Response) {
+	const html = `
+	<!DOCTYPE html>
+	<html>
+	  <head>
+		<title>Stripe Ecommerce - Sucess</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	  </head>
+	  <body class="${style.body}">
+		<div class="${style.container} ${style.text}">
+			<h1 class="${style.heading}">Canceled</h1>
+			<p>Something went wrong with your transaction</p>
+			<p>No real money was charged.</p>
+			<p>See more web apps like this in <a href="https://portfolio-kellysondias.vercel.app/" class="${style.link}">my portfolio</a>.</p>
+		</div>
+	  </body>
+	</html>
+  `;
+	res.status(StatusCodes.OK).send(html);
+}

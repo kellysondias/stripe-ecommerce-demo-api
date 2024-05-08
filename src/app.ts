@@ -1,6 +1,10 @@
 import express from "express";
 import "dotenv/config";
-import { handleCheckout } from "./controllers/controllers";
+import {
+	handleCheckout,
+	showCanceledPage,
+	showSuccessPage,
+} from "./controllers/controllers";
 import { handlePriceCreation } from "./controllers/controllers";
 import Stripe from "stripe";
 import dotenv from "dotenv";
@@ -36,5 +40,9 @@ app.options("*", (_, res) => {
 app.post(`${api}/create-price`, handlePriceCreation);
 
 app.post(`${api}/checkout`, handleCheckout);
+
+app.get("/success", showSuccessPage);
+
+app.get("/canceled", showCanceledPage);
 
 export { app };
